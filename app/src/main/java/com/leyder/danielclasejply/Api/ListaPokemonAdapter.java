@@ -1,67 +1,69 @@
 package com.leyder.danielclasejply.Api;
 
+import android.content.Context;
+import android.media.Image;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class ListaPokemonAdapter extends RecyclerView.Adapter <ListaPokemonAdapter.ViewHolder> {
+import com.leyder.danielclasejply.Pokemon;
+import com.leyder.danielclasejply.R;
 
+import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
+
+
+public class ListaPokemonAdapter extends RecyclerView.Adapter <ListaPokemonAdapter.ViewHolder> {
+    private RecyclerView recyclerView;
+    private ListaPokemonAdapter listaPokemonAdapter;
+    private ArrayList<Pokemon> dataset ;
+
+
+    private Context context;
     private String[] localDataSet;
 
-    /**
-     * Provide a reference to the type of views that you are using
-     * (custom ViewHolder).
-     */
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        private final TextView textView;
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        private ImageView imageView2;
+        private TextView name;
 
-        public ViewHolder(View view) {
-            super(view);
-            // Define click listener for the ViewHolder's View
 
-            textView = (TextView) view.findViewById(R.id.textView);
-        }
-
-        public TextView getTextView() {
-            return textView;
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+            name=itemView.findViewById(R.id.textView);
         }
     }
 
-    /**
-     * Initialize the dataset of the Adapter.
-     *
-     * @param dataSet String[] containing the data to populate views to be used
-     * by RecyclerView.
-     */
-    public ListaPokemonAdapter(String[] dataSet) {
-        localDataSet = dataSet;
+    public ListaPokemonAdapter(Context context) {
+
+        this.context = context;
+        dataset = new ArrayList<>();
     }
 
-    // Create new views (invoked by the layout manager)
-    @Override
-    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        // Create a new view, which defines the UI of the list item
-        View view = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.text_row_item, viewGroup, false);
-
+@Override
+    public ViewHolder onCreateViewHolder (ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_poke ,parent,false );
         return new ViewHolder(view);
-    }
+}
+@Override
+    public  int getItemCount() {
 
-    // Replace the contents of a view (invoked by the layout manager)
-    @Override
-    public void onBindViewHolder(ViewHolder viewHolder, final int position) {
-
-        // Get element from your dataset at this position and replace the
-        // contents of the view with that element
-        viewHolder.getTextView().setText(localDataSet[position]);
-    }
-
-    // Return the size of your dataset (invoked by the layout manager)
-    @Override
-    public int getItemCount() {
-        return localDataSet.length;
-    }
+    return  dataset.size();
+}
+@Override
+    public void onBindViewHolder(ViewHolder holder , int position){
+    Pokemon p = dataset.get(position);
+    holder.name.setText(p.getName());
 
 
-
-
+}
+ public void adicionaraListaPokemon(ArrayList<Pokemon> listapokemon) {
+        dataset.addAll(listapokemon);
+        notifyDataSetChanged();
+ }
 
 }
